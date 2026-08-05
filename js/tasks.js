@@ -102,3 +102,29 @@ export function toggleTask(tasks, taskId) {
 export function removeTask(tasks, taskId) {
   return tasks.filter((task) => task.id !== taskId);
 }
+export function editTask(tasks, taskId, value) {
+  const validation = validateTaskText(value);
+
+  if (!validation.valid) {
+    return {
+      tasks: [...tasks],
+      error: validation.error
+    };
+  }
+
+  const updatedTasks = tasks.map((task) => {
+    if (task.id !== taskId) {
+      return task;
+    }
+
+    return {
+      ...task,
+      text: validation.text
+    };
+  });
+
+  return {
+    tasks: updatedTasks,
+    error: ""
+  };
+}
