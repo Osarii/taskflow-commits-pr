@@ -87,3 +87,15 @@ export function addTask(tasks, value) {
     error: ""
   };
 }
+export function toggleTask(tasks, taskId) {
+  return tasks.map((task) => {
+    if (task.id !== taskId) {
+      return task;
+    }
+
+    return {
+      ...task,
+      completed: !task.completed
+    };
+  });
+}
