@@ -127,11 +127,15 @@ export function editTask(tasks, taskId, value) {
     tasks: updatedTasks,
     error: ""
   };
-}
 export function filterTasks(tasks, filter) {
   if (filter === "pending") {
     return tasks.filter((task) => !task.completed);
   }
 
+  if (filter === "completed") {
+    return tasks.filter((task) => task.completed);
+  }
+
   return [...tasks];
+}
 }
