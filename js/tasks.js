@@ -69,3 +69,20 @@ export function createTask(
     error: ""
   };
 }
+export function addTask(tasks, value) {
+  const result = createTask(value);
+
+  if (!result.task) {
+    return {
+      tasks: [...tasks],
+      task: null,
+      error: result.error
+    };
+  }
+
+  return {
+    tasks: [result.task, ...tasks],
+    task: result.task,
+    error: ""
+  };
+}
