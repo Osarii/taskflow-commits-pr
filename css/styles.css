@@ -206,3 +206,35 @@ h2 {
   color: var(--muted);
   text-align: center;
 }
+.task-list {
+  display: grid;
+  gap: 10px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-soft);
+}
+
+.task-item__check {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--primary);
+}
+
+.task-item__text {
+  overflow-wrap: anywhere;
+  font-weight: bold;
+}
+
+.task-item.is-completed .task-item__text {
+  color: var(--muted);
+  text-decoration: line-through;
+  opacity: 0.75;
+}
