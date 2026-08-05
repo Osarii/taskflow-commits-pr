@@ -2,7 +2,8 @@ import {
   addTask,
   toggleTask,
   removeTask,
-  editTask
+  editTask,
+  filterTasks
 } from "./tasks.js";
 
 const taskForm = document.getElementById("taskForm");
@@ -10,25 +11,38 @@ const taskInput = document.getElementById("taskInput");
 const taskList = document.getElementById("taskList");
 const emptyState = document.getElementById("emptyState");
 const formError = document.getElementById("formError");
+const filterButtons = document.querySelectorAll("[data-filter]");
 
 let tasks = [];
 let editingTaskId = null;
+let currentFilter = "all";
 
 function showError(message) {
   formError.textContent = message;
 }
 
+function updateFilterButtons() {
+  filterButtons.forEach((button) => {
+    const isActive = button.dataset.filter === currentFilter;
+
+    button.classList.toggle("is-active", isActive);
+  });
+}
+
 function renderTasks() {
   taskList.innerHTML = "";
 
-  if (tasks.length === 0) {
+  const visibleTasks = filterTasks(tasks, currentFilter);
+
+  if (visibleTasks.length === 0) {
     emptyState.hidden = false;
+    updateFilterButtons();
     return;
   }
 
   emptyState.hidden = true;
 
-  tasks.forEach((task) => {
+  visibleTasks.forEach((task) => {
     const listItem = document.createElement("li");
     const checkbox = document.createElement("input");
 
@@ -94,6 +108,8 @@ function renderTasks() {
 
     taskList.appendChild(listItem);
   });
+
+  updateFilterButtons();
 }
 
 taskForm.addEventListener("submit", (event) => {
@@ -208,6 +224,15 @@ taskList.addEventListener("click", (event) => {
     showError("");
     renderTasks();
   }
+});
+
+filterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    currentFilter = button.dataset.filter;
+    editingTaskId = null;
+
+    renderTasks();
+  });
 });
 
 renderTasks();
