@@ -99,3 +99,6 @@ export function toggleTask(tasks, taskId) {
     };
   });
 }
+export function removeTask(tasks, taskId) {
+  return tasks.filter((task) => task.id !== taskId);
+}
