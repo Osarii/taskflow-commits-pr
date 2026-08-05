@@ -36,3 +36,36 @@ export function validateTaskText(value) {
     text
   };
 }
+
+function generateId() {
+  if (globalThis.crypto?.randomUUID) {
+    return globalThis.crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+export function createTask(
+  value,
+  id = generateId(),
+  createdAt = new Date().toISOString()
+) {
+  const validation = validateTaskText(value);
+
+  if (!validation.valid) {
+    return {
+      task: null,
+      error: validation.error
+    };
+  }
+
+  return {
+    task: {
+      id,
+      text: validation.text,
+      completed: false,
+      createdAt
+    },
+    error: ""
+  };
+}
