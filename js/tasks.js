@@ -69,6 +69,7 @@ export function createTask(
     error: ""
   };
 }
+
 export function addTask(tasks, value) {
   const result = createTask(value);
 
