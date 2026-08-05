@@ -1,4 +1,4 @@
-import { addTask } from "./tasks.js";
+import { addTask, toggleTask } from "./tasks.js";
 
 const taskForm = document.getElementById("taskForm");
 const taskInput = document.getElementById("taskInput");
@@ -24,13 +24,25 @@ function renderTasks() {
 
   tasks.forEach((task) => {
     const listItem = document.createElement("li");
+    const checkbox = document.createElement("input");
     const taskText = document.createElement("span");
 
     listItem.className = "task-item";
-    taskText.className = "task-item__text";
+    listItem.dataset.taskId = task.id;
 
+    checkbox.type = "checkbox";
+    checkbox.checked = task.completed;
+    checkbox.className = "task-item__check";
+    checkbox.dataset.action = "toggle";
+
+    taskText.className = "task-item__text";
     taskText.textContent = task.text;
 
+    if (task.completed) {
+      listItem.classList.add("is-completed");
+    }
+
+    listItem.appendChild(checkbox);
     listItem.appendChild(taskText);
     taskList.appendChild(listItem);
   });
@@ -58,6 +70,26 @@ taskInput.addEventListener("input", () => {
   if (formError.textContent) {
     showError("");
   }
+});
+
+taskList.addEventListener("change", (event) => {
+  const checkbox = event.target;
+
+  if (checkbox.dataset.action !== "toggle") {
+    return;
+  }
+
+  const listItem = checkbox.closest("[data-task-id]");
+
+  if (!listItem) {
+    return;
+  }
+
+  const taskId = listItem.dataset.taskId;
+
+  tasks = toggleTask(tasks, taskId);
+
+  renderTasks();
 });
 
 renderTasks();
